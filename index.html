@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>freehtml</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <h1>freehtml</h1>
+    <p>a hub for developers that want a couple of free HTML snippets</p>
+
+    <main>
+    <div class="code" data-code-url="/code/macosbuttons.html">
+      <div class="code-preview">
+        <iframe src="/code/macosbuttons.html"></iframe>
+      </div>
+      <button class="getcode" onclick="codecopything(this)">Copy Code <i class="fa-regular fa-clipboard"></i></button>
+      <input class="code-input" value="" style="display: none;">
+    </div>
+
+    <div class="code" data-code-url="/code/simpleloading.html">
+      <div class="code-preview">
+        <iframe src="/code/simpleloading.html"></iframe>
+      </div>
+      <button class="getcode" onclick="codecopything(this)">Copy Code <i class="fa-regular fa-clipboard"></i></button>
+      <input class="code-input" value="" style="display: none;">
+    </div>
+
+    <div class="code" data-code-url="/code/discordbutton.html">
+        <div class="code-preview">
+          <iframe src="/code/discordbutton.html"></iframe>
+        </div>
+        <button class="getcode" onclick="codecopything(this)">Copy Code <i class="fa-regular fa-clipboard"></i></button>
+        <input class="code-input" value="" style="display: none;">
+    </div>
+
+    <div class="code" data-code-url="/code/downloadbutton.html">
+        <div class="code-preview">
+          <iframe src="/code/download.html"></iframe>
+        </div>
+        <button class="getcode" onclick="codecopything(this)">Copy Code <i class="fa-regular fa-clipboard"></i></button>
+        <input class="code-input" value="" style="display: none;">
+    </div>
+
+  </main>
+  
+  <script>
+    async function loadCodeForDiv(codeDiv) {
+      const codeUrl = codeDiv.getAttribute("data-code-url");
+      try {
+        const response = await fetch(codeUrl);
+        const code = await response.text();
+        codeDiv.querySelector(".code-input").value = code;
+      } catch (error) {
+        console.error('Error loading code:', error);
+      }
+    }
+
+    function codecopything(button) {
+      const codeDiv = button.closest('.code');
+      const codeInput = codeDiv.querySelector(".code-input");
+      if (!codeInput.value) {
+        loadCodeForDiv(codeDiv).then(() => {
+          copyCode(codeInput);
+        });
+      } else {
+        copyCode(codeInput);
+      }
+    }
+
+    function copyCode(inputElement) {
+      inputElement.style.display = "block";
+      inputElement.select();
+      inputElement.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(inputElement.value).then(() => {
+        alert("copied code!!");
+      }).catch((err) => {
+        alert("Failed to copy code.");
+        console.error(err);
+      });
+      inputElement.style.display = "none";
+    }
+
+    window.onload = function() {
+      document.querySelectorAll('.code').forEach(loadCodeForDiv);
+    };
+  </script>
+</body>
+</html>
